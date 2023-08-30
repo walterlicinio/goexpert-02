@@ -32,19 +32,26 @@ func main() {
 	cep, _ := reader.ReadString('\n')
 	cep = strings.TrimSpace(cep)
 
-	ch := make(chan string)
+	ch1 := make(chan string)
+	ch2 := make(chan string)
 
 	url1 := "https://cdn.apicep.com/file/apicep/" + cep + ".json"
 	url2 := "http://viacep.com.br/ws/" + cep + "/json/"
 
-	go fetchAPI(url1, ch)
-	go fetchAPI(url2, ch)
+	go fetchAPI(url1, ch1)
+	go fetchAPI(url2, ch2)
 
-	timeout := time.After(1 * time.Second)
-	select {
-	case res := <-ch:
-		fmt.Println(res)
-	case <-timeout:
-		fmt.Println("Timeout")
+	for {
+		select {
+		case res := <-ch1:
+			fmt.Println(res)
+			return
+		case res := <-ch2:
+			fmt.Println(res)
+			return
+		case <-time.After(1 * time.Second):
+			fmt.Println("Timeout")
+			return
+		}
 	}
 }
