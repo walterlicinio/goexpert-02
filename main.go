@@ -24,7 +24,7 @@ func fetchAPI(url string, ch chan<- string) {
 		return
 	}
 	secs := time.Since(start).Seconds()
-	ch <- fmt.Sprintf("%.2f ms decorrido com resposta da API %s\nResposta: %s", secs*1000, url, body)
+	ch <- fmt.Sprintf("URL: %s, Tempo decorrido: %d ms, Resposta: %s", url, int(secs*1000), body)
 }
 func main() {
 	fmt.Println("Digite o CEP:")
