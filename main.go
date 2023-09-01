@@ -35,6 +35,7 @@ type ViaCepResponse struct {
 }
 
 func fetchApiCep(cep string, ch chan<- string) {
+	cep = cep[:5] + "-" + cep[5:]
 	start := time.Now()
 	url := "https://cdn.apicep.com/file/apicep/" + cep + ".json"
 	resp, err := http.Get(url)
